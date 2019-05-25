@@ -1,12 +1,14 @@
 #!/usr/bin/python
-
+from Tkinter import *
 import numpy as np
 import decimal
+import sys
+from astropy.table import Table
 
+# GLOBAL
 TAX_RATE = .22
 
 # ASSUMPTIONS 
-# pv = int(raw_input("What is the purchase price?\n"))
 # Assuming 300k purchase price
 pv = 300000
 
@@ -19,9 +21,10 @@ nper = 30 * 12
 # Depreciation is over 27.5 years
 depr = int(pv / 27.5 )
 
-fv = 0
+# Interest rate of 4.5%
 rate = 0.045 / 12
 
+fv = 0
 
 running_int_total = 0
 running_pri_total = 0
@@ -51,9 +54,24 @@ print("Your total principal in year " + str(j) + \
 print("Your total tax deduction in year " + str(j) + \
     " will be $ {:,.2f}".format ( ( depr + interest[j] ) * TAX_RATE  ))
 
-rent = rent * (1.04)**j
+# rent increases at 4% per year
+rent = ( rent * (1.04)**j )
+
+# 10% CapEx, 10% Vacancy, 10% Management
+expenses = rent * .3
+rent = rent - expenses
+
 mortgage = principal[j] + interest[j]
 
 print("Your cash flow in year " + str(j) + \
     " will be $ {:,.2f}".format ( (rent*12 - mortgage) ) \
     + " with monthly rent at ${:,.2f}".format (rent ) + ".")
+print("Your expenses for Capital Expenditures, " \
++ "Vacancy, and Management were" + \
+    " ${:,.2f}".format ( expenses ) + ".")
+
+a = ["Principal", "Interest"]
+b = ["{:,.2f}".format (principal[j]), "{:,.2f}".format (interest[j])]
+c = ['x', 'y']
+t = Table([a, b, c], names=('a', 'b', 'c'))
+print(t)
