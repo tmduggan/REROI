@@ -1,7 +1,8 @@
 #!/usr/bin/python
+# Tkinter imported for GUI
 from Tkinter import *
 import numpy as np
-import decimal
+# sys and astropy added for Tables
 import sys
 from astropy.table import Table
 
@@ -9,8 +10,11 @@ from astropy.table import Table
 TAX_RATE = .22
 
 # ASSUMPTIONS 
+# Home owner's insurance = 0.3% based on my last purchase
+# Property Tax = 1.69%
 # Assuming 300k purchase price
 pv = 300000
+prop_tax = 0.0169 * pv
 
 # Rent = $2500/month
 rent = 2500
@@ -25,7 +29,6 @@ depr = int(pv / 27.5 )
 rate = 0.045 / 12
 
 fv = 0
-
 running_int_total = 0
 running_pri_total = 0
 interest = []
@@ -41,18 +44,7 @@ for per in range(nper):
     #print(principal, interest, principal + interest)
     running_int_total += i
     running_pri_total += p
-j = int(raw_input("What year do you want to know the interest and principal?\n"))
-
-print("Your total interest in year " + str(j) + \
-    " will be $ {:,.2f}".format ( interest[j]  ))
-print("Your total principal in year " + str(j) + \
-    " will be $ {:,.2f}".format ( principal[j]  ))
-
-# print("Your total depreciation for 27 years (and half for the 28th year) " + \
-#     "will be $ {:.2f}".format ( depr  ))
-
-print("Your total tax deduction in year " + str(j) + \
-    " will be $ {:,.2f}".format ( ( depr + interest[j] ) * TAX_RATE  ))
+j = int(raw_input("For what year do you want to know the interest and principal?\n"))
 
 # rent increases at 4% per year
 rent = ( rent * (1.04)**j )
@@ -63,15 +55,37 @@ rent = rent - expenses
 
 mortgage = principal[j] + interest[j]
 
-print("Your cash flow in year " + str(j) + \
-    " will be $ {:,.2f}".format ( (rent*12 - mortgage) ) \
-    + " with monthly rent at ${:,.2f}".format (rent ) + ".")
-print("Your expenses for Capital Expenditures, " \
-+ "Vacancy, and Management were" + \
-    " ${:,.2f}".format ( expenses ) + ".")
 
-a = ["Principal", "Interest"]
-b = ["{:,.2f}".format (principal[j]), "{:,.2f}".format (interest[j])]
-c = ['x', 'y']
-t = Table([a, b, c], names=('a', 'b', 'c'))
+a = ["Total Payment"] 
+a += ["Principal"]
+a += ["Interest"]
+a += ["Taxes"]
+a += ["Cash Flow"]
+a += ["Tax Deduction"]
+a += ["Equity Accrued"]
+a += ["Expenses"]
+
+total = principal[j] + interest[j] + prop_tax
+cash_flow = rent*12 - mortgage - prop_tax
+tax_ded = ( depr + interest[j] ) * TAX_RATE
+
+k = 0
+for per in range(j):
+    k += principal[per] 
+equity_accrued = k / pv
+new_value = pv * (1.07)**j
+equity_accrued = equity_accrued * new_value
+
+b = ["{:,.2f}".format (total)]
+b += ["{:,.2f}".format (principal[j])]
+b += ["{:,.2f}".format (interest[j])]
+b += ["{:,.2f}".format (prop_tax)]
+b += ["{:,.2f}".format (cash_flow)]
+b += ["{:,.2f}".format (tax_ded)]
+b += ["{:,.2f}".format (equity_accrued)]
+b += ["{:,.2f}".format (expenses)]
+
+t = Table([a, b], names=('Annual', j))
 print(t)
+
+# I want to know the sum of equity acquired, tax reduction, and cash flow
