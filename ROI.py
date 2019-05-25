@@ -1,19 +1,17 @@
 #!/usr/bin/python
-# Tkinter imported for GUI
-from Tkinter import *
 import numpy as np
-# sys and astropy added for Tables
-import sys
 from astropy.table import Table
+import settings
 
-# GLOBAL
-TAX_RATE = .22
+
+trate = settings.TAX_RATE
+pv = settings.HOUSE_PRICE
 
 # ASSUMPTIONS 
 # Home owner's insurance = 0.3% based on my last purchase
 # Property Tax = 1.69%
 # Assuming 300k purchase price
-pv = 300000
+
 prop_tax = 0.0169 * pv
 
 # Rent = $2500/month
@@ -67,7 +65,7 @@ a += ["Expenses"]
 
 total = principal[j] + interest[j] + prop_tax
 cash_flow = rent*12 - mortgage - prop_tax
-tax_ded = ( depr + interest[j] ) * TAX_RATE
+tax_ded = ( depr + interest[j] ) * trate
 
 k = 0
 for per in range(j):
