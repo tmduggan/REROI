@@ -1,4 +1,6 @@
 #!/usr/bin/python
+
+
 import numpy as np
 from astropy.table import Table
 import settings
@@ -20,3 +22,8 @@ b += ["{:,.2f}".format (equity_accrued)]
 
 t = Table([a, b], names=('Annual', logic.j))
 print(t)
+
+# I want to know how much return I am getting, not counting 
+# mortgage. I want to know my ROI which should be equal to
+# (Rent Income + Equity accrued + tax deduction) 
+# - (down payment + prop tax * J)
