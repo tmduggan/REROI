@@ -43,39 +43,27 @@ for per in range(nper):
 j = int(raw_input("For what year do you want to know the" \
     + " interest and principal?\n"))
 
-# rent increases at 4% per year
-net_rent = ( rent * (1.04)**j )
-effective_rent = net_rent * .9
-# gross operating income includes other income
-GOI = effective_rent
-# NOI is effective rent minus repairs (10%), 
-# prop tax (5000), and insurance (1000) 
-NOI = effective_rent - (net_rent*.1) - 1000 - 5000
-
-
-mortgage = principal[j] + interest[j]
-
-total = principal[j] + interest[j] + prop_tax
-cash_flow = NOI - mortgage - prop_tax
-tax_ded = ( depr + interest[j] ) * trate
-
 k = 0
 for per in range(j):
     k += principal[per] 
-equity_accrued = k / pv
-new_value = pv * (1.07)**j
-equity_accrued = equity_accrued * new_value
 
-one_time_expenses = settings.REHAB + settings.DOWN_PAYMENT
-
-ROI = NOI / one_time_expenses
-
-print("Your NOI is $" + "{:,.2f}".format(NOI))
-print("Your ROI is " + "{:,.2f}".format(ROI*100) + "%.")
-print("Your Cap Rate is " + str(NOI / pv))
-
-gain_per_year = tax_ded + equity_accrued
-print("We are generating " + str(NOI) + " per year on an investment of " \
-+ str(one_time_expenses))
-
-print("Cash on cash return is " + "{:,.2f}".format (100 * NOI/one_time_expenses) + "%")
+###############
+## Equations ## 
+###############
+# rent increases at 4% per year
+net_rent            =   ( rent * (1.04)**j )
+net_taxes           =   taxes[j]
+effective_rent      =   net_rent * .9
+# NOI is effective rent minus repairs (10%), 
+# prop tax (5000), and insurance (1000) 
+insurance           =   new_value [j] * .01
+NOI                 =   effective_rent - (net_rent*.1) - insurance - 5000
+mortgage            =   principal[j] + interest[j]
+cash_flow           =   NOI - mortgage - prop_tax
+tax_ded             =   ( depr + interest[j] ) * trate
+new_value           =   pv * (1.07)**j
+equity_accrued      =   new_value * k / pv 
+cash_in             =   settings.REHAB + settings.DOWN_PAYMENT + insurance
+ROI                 =   100 * NOI / cash_in
+cash_on_cash        =   100 * NOI / cash_in
+cap_rate            =   100 * NOI / pv
