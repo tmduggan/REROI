@@ -18,8 +18,10 @@ taxes = []
 interest = []
 principal = []
 new_value = []
+net_rent = []
 
 for per in range(nper):
+    net_rent    +=   [( st.RENT * (1.04)**per )]
     if per !=0 and per % 12 == 0: 
         interest += [running_int_total]
         principal += [running_pri_total]

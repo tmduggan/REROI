@@ -30,3 +30,9 @@ RENT = 2500 * 12
 # Loan term is 30 years, 12 payments per year
 LOAN_TERM = 30 * 12
 
+# Depreciation is over 27.5 years
+DEPR = int(HOUSE_PRICE_FULL * .8 / 27.5 )
+
+# j = int(raw_input("For what year do you want to know the" \
+#     + " interest and principal?\n"))
+j = 1
