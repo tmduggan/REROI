@@ -7,7 +7,6 @@ pv      =   st.HOUSE_PRICE
 rent    =   st.RENT
 trate   =   st.TAX_RATE
 
-taxes = gm.taxes
 interest = gm.interest
 principal = gm.principal
 new_value = gm.new_value
@@ -22,11 +21,12 @@ for per in range(j):
 ## Equations ## 
 ###############
 net_rent            =   gm.net_rent[j]
-net_taxes           =   taxes[j]
-effective_rent      =   net_rent * .9
-prop_tax            =   st.PROP_TAX_RATE * new_value[j]
-insurance           =   new_value [j] * .01
+net_taxes           =   gm.taxes[j]
+effective_rent      =   gm.effective_rent[j]
+prop_tax            =   gm.prop_tax[j]
+insurance           =   gm.insurance[j]
 NOI                 =   effective_rent - (net_rent*.1) - insurance - prop_tax
+# NOI                 =   gm.NOI[j]
 mortgage            =   principal[j] + interest[j]
 cash_flow           =   NOI - mortgage - prop_tax
 tax_ded             =   ( st.DEPR + interest[j] ) * trate
@@ -37,4 +37,8 @@ ROI                 =   100 * NOI / cash_in
 cash_on_cash        =   100 * NOI / cash_in
 cap_rate            =   100 * NOI / pv
 
-# Equations that depend on loop iteration
+# I want an array of 
+# # cash flow per year
+# # Tax deduction per year
+# # equity accrued per year
+# # NOI per year

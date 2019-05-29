@@ -36,3 +36,6 @@ b   +=  [ROI_str]
 
 t = Table([a, b], names=('Annual', l.j))
 print(t)
+
+# Now I want a table to show the numbers at year 1, 5, 10, and 20
+# 
