@@ -23,3 +23,6 @@ LOAN_TERM = 30 * 12
 
 # Depreciation is over 27.5 years
 DEPR = int(HOUSE_PRICE_FULL * .8 / 27.5 )
+
+# 4.5% Interest rate on loan
+LOAN_INTEREST_RATE = 0.045 / 12

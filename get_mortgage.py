@@ -4,26 +4,11 @@ import settings as st
 
 pv          =   st.HOUSE_PRICE
 nper        =   st.LOAN_TERM
-trate       =   st.TAX_RATE
+rate        =   st.LOAN_INTEREST_RATE
 
-
-# Interest rate of 4.5%
-rate = 0.045 / 12
-
-fv = 0
-running_int_total   = 0
-running_pri_total   = 0
-running_tax_total   = 0
-NOI                 = []    #
-cash_flow           = []    #
-tax_ded             = []    #
-equity_accrued      = []
-
-
-
-
-class get_equity:
+def get_equity(n):
     k = 0
+    equity_accrued      = []
     for per in range (nper):
         if per !=0 and per % 12 == 0:
             nv              =   pv * (1.07)**(per/12)
@@ -31,18 +16,23 @@ class get_equity:
         
         p                   =   -np.ppmt(rate, per, nper, pv)
         k                   +=  p
+    return equity_accrued[n]
 
-class get_taxd:
+def get_taxd(n):
+    running_int_total   = 0
+    tax_ded             = []    #
     for per in range (nper):
         if per !=0 and per % 12 == 0:
-            taxd_temp               =   ( st.DEPR + running_int_total ) * trate
+            taxd_temp               =   ( st.DEPR + running_int_total ) * st.TAX_RATE
             tax_ded                 +=  [taxd_temp]
             running_int_total       =   0
         ##
         i                   =   -np.ipmt(rate, per, nper, pv)
         running_int_total   +=  i
+    return tax_ded[n]
 
-class get_NOI:
+def get_NOI(n):
+    NOI                 = []    #
     for per in range (nper):
         if per !=0 and per % 12 == 0:
             # new value of house
@@ -62,14 +52,18 @@ class get_NOI:
             ipr                     =   ins_temp + prop_temp
         
             NOI                     +=  [ert - ipr]
+    return NOI[n]
 
-class get_cflow:
+def get_cflow(n):
+    cash_flow           = []
+    running_pri_total   = 0
+    running_int_total   = 0
     for per in range (nper):
         if per !=0 and per % 12 == 0:
             # total mortgage
             mrg_temp                =   running_int_total + running_pri_total
             iter_i                  =   per/12 - 1
-            NOI_temp                =   NOI[ iter_i ]
+            NOI_temp                =   get_NOI( iter_i )
             cash_flow               +=  [NOI_temp - mrg_temp]
 
             # reset intermediate values
@@ -79,8 +73,70 @@ class get_cflow:
         i                   =   -np.ipmt(rate, per, nper, pv)
         running_int_total   +=  i
         running_pri_total   +=  p
+    return cash_flow[n]
 
-cash_in             =   st.REHAB + st.DOWN_PAYMENT + (st.HOUSE_PRICE_FULL * .01)
-ROI                 =   100 * NOI[1] / cash_in
-cash_on_cash        =   100 * NOI[1] / cash_in
-cap_rate            =   100 * NOI[1] / st.HOUSE_PRICE
+def get_ci():
+    return st.REHAB + st.DOWN_PAYMENT + (st.HOUSE_PRICE_FULL * .01)
+
+
+
+def get_coc():
+    return 100 * get_NOI(1) / get_ci()
+
+def get_cap():
+    return 100 * get_NOI(1) / st.HOUSE_PRICE
+
+#############################
+#       Unused Modules      #
+#############################
+def get_ROI():
+    return 100 * get_NOI(1) / get_ci()
+
+def get_p(n):
+    fv = 0
+    running_pri_total   = 0
+    principal           = []
+
+    for per in range(nper):
+        
+
+        if per !=0 and per % 12 == 0: 
+            principal               +=  [running_pri_total]
+            running_pri_total       =   0
+            
+        p                   =   -np.ppmt(rate, per, nper, pv)
+        running_pri_total   +=  p
+    return principal(n)
+
+def get_i(n):
+    fv = 0
+    running_int_total   = 0
+    interest            = []
+
+    for per in range(nper):
+        
+
+        if per !=0 and per % 12 == 0: 
+            interest                +=  [running_int_total]
+            running_int_total       =   0
+            
+        i                   =   -np.ipmt(rate, per, nper, pv)
+        running_int_total   +=  i
+    return interst[n]
+
+def get_t(n):
+    fv = 0
+    running_int_total   = 0
+    running_tax_total   = 0
+
+    taxes               = []
+
+    for per in range(nper):
+
+        if per !=0 and per % 12 == 0: 
+            taxes                   +=  [running_tax_total]
+            running_int_total       =   0
+        i                   =   -np.ipmt(rate, per, nper, pv)
+        running_int_total   +=  i
+        running_tax_total   +=  i * trate
+    return taxes[n]
