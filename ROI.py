@@ -1,79 +1,47 @@
 #!/usr/bin/python
 
 import numpy as np
-from astropy.table import Table
-from astropy.table import Column
+from astropy.table import Table, Column
 import get_mortgage as gm
 
 
+t = Table()
 a   =   ["Cash Flow"]
 a   +=  ["Tax Deduction"]
 a   +=  ["Equity Accrued"]
 a   +=  ["NOI"]
+t['Annual'] = a
 
-cf_str      =   "$" +   "{:,.2f}".format(   gm.cash_flow[1]         )
-td_str      =   "$" +   "{:,.2f}".format(   gm.tax_ded[1]           )
-ea_str      =   "$" +   "{:,.2f}".format(   gm.equity_accrued[1]    )
-NOI_str     =   "$" +   "{:,.2f}".format(   gm.NOI[1]               )
-
-b   =   [cf_str]
-b   +=  [td_str]
-b   +=  [ea_str]
-b   +=  [NOI_str]
-
-cf_str      =   "$" +   "{:,.2f}".format(   gm.cash_flow[5]         )
-td_str      =   "$" +   "{:,.2f}".format(   gm.tax_ded[5]           )
-ea_str      =   "$" +   "{:,.2f}".format(   gm.equity_accrued[5]    )
-NOI_str     =   "$" +   "{:,.2f}".format(   gm.NOI[5]               )
-
-c   =   [cf_str]
-c   +=  [td_str]
-c   +=  [ea_str]
-c   +=  [NOI_str]
-
-cf_str      =   "$" +   "{:,.2f}".format(   gm.cash_flow[15]         )
-td_str      =   "$" +   "{:,.2f}".format(   gm.tax_ded[15]           )
-ea_str      =   "$" +   "{:,.2f}".format(   gm.equity_accrued[15]    )
-NOI_str     =   "$" +   "{:,.2f}".format(   gm.NOI[15]               )
-
-d   =   [cf_str]
-d   +=  [td_str]
-d   +=  [ea_str]
-d   +=  [NOI_str]
+i = 0
+tot = 4
+nums = [1, 5, 15, 25]
+for i in range(tot):
+    cf_str      =   "$" +   "{:,.0f}".format(   gm.cash_flow[nums[i]]         )
+    td_str      =   "$" +   "{:,.0f}".format(   gm.tax_ded[nums[i]]           )
+    ea_str      =   "$" +   "{:,.0f}".format(   gm.equity_accrued[nums[i]]    )
+    NOI_str     =   "$" +   "{:,.0f}".format(   gm.NOI[nums[i]]               )
+    str_temp = str(nums[i])
+    t[str_temp] = Column([cf_str, td_str, ea_str, NOI_str])
 
 
 cin_str     =   "$" +   "{:,.2f}".format(   gm.cash_in      )
 coc_str     =           "{:,.2f}".format(   gm.cash_on_cash  )    + "%"
 Cap_str     =           "{:,.2f}".format(   gm.cap_rate      )        + "%"
-ROI_str     =           "{:,.2f}".format(   gm.ROI           )             + "%"
+# ROI_str     =           "{:,.2f}".format(   gm.ROI           )             + "%"
 
 # d/e table will be one time calculations
 x   =  ["Cash in"]
 x   +=  ["Cash on cash"]
 x   +=  ["Cap Rate"]
-x   +=  ["ROI"]
+# x   +=  ["ROI"]
 
 y   =  [cin_str]
 y   +=  [coc_str]
 y   +=  [Cap_str]
-y   +=  [ROI_str]
+# y   +=  [ROI_str]
 
-
-
-
-# b   =   [cf_str]
-# b   +=  [td_str]
-# b   +=  [ea_str]
-# b   +=  [NOI_str]
-
-
-t = Table([a, b, c, d], names=('Annual', '1', '5', '15'))
-u = Table([x, y], names=('One Time Calcuations', 'Total'))
+u = Table([x, y], names=(' ', 'Total'))
 print('\n')
 print(u)
 print('\n')
 print(t)
-
-
-# Now I want a table to show the numbers at year 1, 5, 10, and 20
-# 

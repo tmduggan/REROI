@@ -48,7 +48,8 @@ class get_NOI:
             # new value of house
             nv                      =   pv * (1.07)**(per/12)
             # property insurance 1%
-            ins_temp                =   nv * .01
+            ins_rate                =   .0042
+            ins_temp                =   nv * ins_rate
             # property tax 1.69%
             prop_temp               =   st.PROP_TAX_RATE * nv
             # rent with appropriate annual increase

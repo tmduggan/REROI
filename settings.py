@@ -2,15 +2,6 @@
 
 # I want to know how good/bad of an investment
 # buying different properties are.
-# CAP RATE does NOT include mortgage expenses
-# NOI = Gross - Expenses
-# Expenses = Vacancy, Tax, Insurance, Maintenance,
-# Expenses = 10% + 1.69% + .33% + 10% = 22%
-
-# ASSUMPTIONS 
-# Home owner's insurance = 0.3% based on my last purchase
-# Property Tax = 1.69%
-# Assuming 300k purchase price
 
 # # GLOBAL
 TAX_RATE = .22
@@ -32,7 +23,3 @@ LOAN_TERM = 30 * 12
 
 # Depreciation is over 27.5 years
 DEPR = int(HOUSE_PRICE_FULL * .8 / 27.5 )
-
-# j = int(raw_input("For what year do you want to know the" \
-#     + " interest and principal?\n"))
-j = 1
