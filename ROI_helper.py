@@ -78,8 +78,6 @@ def get_cflow(n):
 def get_ci():
     return st.REHAB + st.DOWN_PAYMENT + (st.HOUSE_PRICE_FULL * .01)
 
-
-
 def get_coc():
     return 100 * get_NOI(1) / get_ci()
 
